@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class OrderForm extends Component {
   constructor(props) {
     super();
-    // this.props = props;
+    this.props = props;
     this.state = {
       name: " ",
       ingredients: [],
@@ -12,12 +12,10 @@ class OrderForm extends Component {
   handleNameChange = e => {
     e.preventDefault();
     this.setState({ name: e.target.value });
-    console.log(this.state.name);
   }
 
   handleIngredientChange = e => {
     e.preventDefault();
-    console.log(this.state.ingredients);
     this.setState({
       ingredients: [e.target.name, ...this.state.ingredients],
     });
@@ -25,7 +23,10 @@ class OrderForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    if(this.state.name && this.state.ingredients){
+    this.props.submitOrder(this.state.name, this.state.ingredients)
     this.clearInputs();
+    }
   }
 
   clearInputs = () => {
