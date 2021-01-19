@@ -31,7 +31,7 @@ class App extends Component {
     return (
       <main className="App">
         <header>
-          <h1>Burrito Builder</h1>
+          <h1 id="title">Burrito Builder</h1>
           <OrderForm submitOrder={this.submitOrder} />
         </header>
         <Orders orders={this.state.orders} />
