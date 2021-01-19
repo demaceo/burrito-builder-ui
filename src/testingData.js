@@ -28,3 +28,10 @@ export const mockedOrders = [
     ],
   },
 ];
+
+
+export const mockedNewOrder = {
+    id: 4,
+    name: 'Spider-Man',
+    ingredients: ["queso fresco", "jalapeno"]
+  };
