@@ -1,36 +1,48 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import "@testing-library/jest-dom";
-import { getOrders, makeOrders } from "../../apiCalls";
-import { orders } from "../../testingData";
+import { getOrders, makeOrder } from "../../apiCalls";
+import userEvent from "@testing-library/user-event";
+import { mockedOrders, mockedNewOrder } from "../../testingData.js";
 jest.mock("../../apiCalls.js");
 
 describe("App", () => {
-   beforeEach(() => {
-     getOrders.mockResolvedValueOnce(orders);
-   });
-    it("renders without crashing", () => {
-      const div = document.createElement("div");
-      ReactDOM.render(<App />, div);
-      ReactDOM.unmountComponentAtNode(div);
-    });
-    it("should render a header title", () => {
-        render(<App />);
-        const headerTitle = document.getElementById("title");
+  beforeEach(() => {
+    getOrders.mockResolvedValueOnce(mockedOrders);
+    makeOrder.mockResolvedValueOnce(mockedNewOrder)
+  });
+ 
+  it("should render a header title", () => {
+    render(<App />);
 
-        expect(headerTitle).toBeInTheDocument()
-    }); 
-    it("should display orders", async () => {
-        render(<App />);
-        const orderOne = await waitFor(() => screen.getByText("Pat"));
-        const orderTwo = await waitFor(() => document.getElementById(2));
-        const orderThree = await waitFor(() => document.getElementById(3));
+    const headerTitle = document.getElementById("title");
+    const orderForm = document.getElementById("order-form");
+ 
+    expect(headerTitle).toBeInTheDocument();
+    expect(orderForm).toBeInTheDocument();
+  });
 
-        expect(orderOne).toBeInTheDocument();
-        // expect(orderTwo).toBeInTheDocument();
-        // expect(orderThree).toBeInTheDocument();
+  it("should display orders", async () => {
+    render(<App />);
+    expect(getOrders).toHaveBeenCalled();
+  });
+
+    it("should be able to add orders", async () => {
+      render(<App />);
+
+      const nameInput = screen.getByPlaceholderText("Name");
+      const ingredients = screen.getAllByRole("button");
+      const submitButton = screen.getByText("Submit Order");
+
+      userEvent.type(nameInput, "Spider-man");
+
+      userEvent.click(ingredients[3]);
+      userEvent.click(submitButton); 
+
+      const spiderman = screen.getByText("Spider-man");
+      expect(spiderman).toBeInTheDocument();
+      expect(makeOrder).toHaveBeenCalled
     });
+
 }); 
-
