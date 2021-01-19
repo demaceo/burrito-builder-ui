@@ -6,7 +6,6 @@ import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { makeOrders } from "../../apiCalls";
 
-
 describe("Order Form", () => {
   it("should render a form", () => {
     render(<OrderForm />);
@@ -55,5 +54,7 @@ it("should render a form with all available ingredients", () => {
     userEvent.type(screen.getByPlaceholderText("Name"), "Spider-Man");
 
     expect(nameInput).toHaveValue("Spider-Man");
+    //not sure why but the expected value and the received value 
+    //are coming back the same, but this test is failing.
   });
 });
